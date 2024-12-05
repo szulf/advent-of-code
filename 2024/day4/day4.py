@@ -25,4 +25,34 @@ def func(data: [str], string: str, row: int, col: int, max_row: int, max_col: in
     return sum
 
 
-print(part1("input.txt"))
+def part2(file_name: str) -> int:
+    sum = 0
+
+    file = open(file_name, "r")
+    data = [x for x in file]
+    for row, line in enumerate(data):
+        for col, letter in enumerate(line):
+            if letter == "A":
+                if func2(data, col, row, len(data), len(line) - 1):
+                    sum += 1
+    return sum
+
+
+def func2(data: [str], col: int, row: int, max_row: int, max_col: int) -> bool:
+    sum = 0
+    positions = [(row - 1, col - 1), (row - 1, col + 1), (row + 1, col - 1), (row + 1, col + 1)]
+    opposites = [(row + 1, col + 1), (row + 1, col - 1), (row - 1, col + 1), (row - 1, col - 1)]
+    for i, v in enumerate(positions):
+        try:
+            if v[0] >= 0 and v[0] < max_row and v[1] >= 0 and v[1] < max_col and (v[0] != row or v[1] != col):
+                if data[v[0]][v[1]] == "M" and data[opposites[i][0]][opposites[i][1]] == "S":
+                    sum += 1
+        except Exception:
+            str(Exception)
+    if sum == 2:
+        return True
+    return False
+
+
+# print(part1("sample-input.txt"))
+print(part2("input.txt"))
